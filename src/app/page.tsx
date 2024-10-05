@@ -1,40 +1,55 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import useGetPlacesDashboard from './react-query/hooks/use-get-places-dashboard';
 import useGetProvinces from './react-query/hooks/use-get-provinces';
+import PlaceCard from './components/place-card';
+import { AutoComplete } from '@/components/autocomplete';
 
 export default function Home() {
   const searchParams = useSearchParams();
   const province = searchParams.get('province');
   const router = useRouter();
 
-  const [provinceName, setProvinceName] = useState('');
+  const [searchProvinceName, setSearchProvinceName] = useState<string>('');
+  const [selectedProvinceName, setSelectedProvinceName] = useState('');
 
   useEffect(() => {
-    setProvinceName(province ?? '');
+    setSelectedProvinceName(province ?? '');
   }, [province]);
 
   const { data: dashboard } = useGetPlacesDashboard({
     provinceName: province ?? '',
   });
-  const { data: provinces } = useGetProvinces();
+  const { data: provinces, isLoading } = useGetProvinces();
+  const allProvinces = useMemo(
+    () =>
+      provinces
+        ?.filter((province) => province.includes(searchProvinceName)) // filter for province that has the input
+        .map((province) => {
+          return { value: province, label: province };
+        }), // format each value for autocomplete
+    [provinces, searchProvinceName],
+  );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push(`/?province=${provinceName}`);
+    router.push(`/?province=${selectedProvinceName}`);
   };
 
   return (
     <div className="w-screen px-6 py-24">
       <div className="flex flex-col gap-4">
         <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
-          <input
-            placeholder="place"
-            className="border px-4 py-4"
-            value={provinceName ?? ''}
-            onChange={(e) => setProvinceName(e.target.value)}
+          <AutoComplete
+            selectedValue={selectedProvinceName}
+            onSelectedValueChange={setSelectedProvinceName}
+            searchValue={searchProvinceName}
+            onSearchValueChange={setSearchProvinceName}
+            items={allProvinces ?? []}
+            isLoading={isLoading}
+            emptyMessage="Province not found."
           />
 
           <button className="rounded bg-blue-400 p-4" type="submit">
@@ -46,22 +61,12 @@ export default function Home() {
         <p className="text-2xl font-semibold">Recommendation</p>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {dashboard?.recommendation?.map((place) => (
-            <div key={place.link} className="rounded-lg border p-4 shadow-md">
-              <img
-                src={place.image}
-                alt={place.title}
-                className="mb-4 h-40 w-full rounded-md object-cover"
-              />
-              <h2 className="text-xl font-bold">{place.title}</h2>
-              <a
-                href={place.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:underline"
-              >
-                Visit
-              </a>
-            </div>
+            <PlaceCard
+              key={place.title}
+              title={place.title}
+              image={place.image}
+              link={place.link}
+            />
           ))}
         </div>
 
@@ -69,22 +74,12 @@ export default function Home() {
         <p className="mt-8 text-2xl font-semibold">Foodie</p>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {dashboard?.foodie?.map((place) => (
-            <div key={place.link} className="rounded-lg border p-4 shadow-md">
-              <img
-                src={place.image}
-                alt={place.title}
-                className="mb-4 h-40 w-full rounded-md object-cover"
-              />
-              <h2 className="text-xl font-bold">{place.title}</h2>
-              <a
-                href={place.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:underline"
-              >
-                Visit
-              </a>
-            </div>
+            <PlaceCard
+              key={place.title}
+              title={place.title}
+              image={place.image}
+              link={place.link}
+            />
           ))}
         </div>
 
@@ -92,25 +87,16 @@ export default function Home() {
         <p className="mt-8 text-2xl font-semibold">Attraction</p>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {dashboard?.attraction?.map((place) => (
-            <div key={place.link} className="rounded-lg border p-4 shadow-md">
-              <img
-                src={place.image}
-                alt={place.title}
-                className="mb-4 h-40 w-full rounded-md object-cover"
-              />
-              <h2 className="text-xl font-bold">{place.title}</h2>
-              <a
-                href={place.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:underline"
-              >
-                Visit
-              </a>
-            </div>
+            <PlaceCard
+              key={place.title}
+              title={place.title}
+              image={place.image}
+              link={place.link}
+            />
           ))}
         </div>
 
+        {/* Provinces Section */}
         <p className="mt-8 text-2xl font-semibold">Provinces</p>
         <div>{provinces?.join(', ')}</div>
       </div>

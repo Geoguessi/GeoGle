@@ -4,7 +4,7 @@ import useGetPlaceByName from '@/app/react-query/hooks/use-get-place';
 import { createImageLoader } from '@/app/util';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 type Params = {
   params: { name: string };
@@ -15,13 +15,15 @@ const Page = ({ params }: Params) => {
     placeName: decodeURI(params.name),
   });
 
+  const router = useRouter();
+
   return (
     <div className="flex w-screen flex-col items-center justify-center px-6 py-12">
       <div className="flex w-full flex-col gap-2 lg:w-4/5">
-        <Link href="/" className="flex items-center gap-2">
+        <div className="flex items-center gap-2" onClick={router.back}>
           <Icon icon="ep:arrow-left-bold" />
           <p>Back to home</p>
-        </Link>
+        </div>
 
         <div className="relative aspect-[16/9] w-full bg-gray-300">
           <Image
