@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import useGetPlacesDashboard from './react-query/hooks/use-get-places-dashboard';
 import useGetProvinces from './react-query/hooks/use-get-provinces';
 import PlaceCard from './components/place-card';
-import { AutoComplete } from '@/components/autocomplete';
+import SearchInput from '@/components/search-input';
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -42,7 +42,7 @@ export default function Home() {
     <div className="w-screen px-6 py-24">
       <div className="flex flex-col gap-4">
         <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
-          <AutoComplete
+          <SearchInput
             selectedValue={selectedProvinceName}
             onSelectedValueChange={setSelectedProvinceName}
             searchValue={searchProvinceName}

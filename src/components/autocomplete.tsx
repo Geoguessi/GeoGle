@@ -13,7 +13,7 @@ import { Input } from './ui/input';
 import { Popover, PopoverAnchor, PopoverContent } from './ui/popover';
 import { Skeleton } from './ui/skeleton';
 
-type Props<T extends string> = {
+export type AutocompleteProps<T extends string> = {
   selectedValue: T;
   onSelectedValueChange: (value: T) => void;
   searchValue: string;
@@ -33,7 +33,7 @@ export function AutoComplete<T extends string>({
   isLoading,
   emptyMessage = 'No items.',
   placeholder = 'Search...',
-}: Props<T>) {
+}: AutocompleteProps<T>) {
   const [open, setOpen] = useState(false);
 
   const labels = useMemo(
@@ -73,7 +73,7 @@ export function AutoComplete<T extends string>({
   };
 
   return (
-    <div className="flex items-center">
+    <div className="flex flex-grow items-center">
       <Popover open={open} onOpenChange={setOpen}>
         <Command shouldFilter={false}>
           <PopoverAnchor asChild>
@@ -88,7 +88,7 @@ export function AutoComplete<T extends string>({
             >
               <Input
                 placeholder={placeholder}
-                className="h-auto border px-4 py-4 text-base"
+                className="h-auto border-none px-4 py-4 text-base"
               />
             </CommandPrimitive.Input>
           </PopoverAnchor>
