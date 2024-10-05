@@ -23,7 +23,18 @@ export const getPlacesDashboard = async ({ queryKey }: Params) => {
     endpoints.provinces.dashboard(provinceName),
   );
 
-  return response.data;
+  const sortPlacesByTitle = (places: PlaceTiny[]) =>
+    places.sort((a, b) => a.title.localeCompare(b.title));
+
+  const { recommendation, foodie, attraction } = response.data;
+
+  const dashboard = {
+    recommendation: sortPlacesByTitle(recommendation),
+    foodie: sortPlacesByTitle(foodie),
+    attraction: sortPlacesByTitle(attraction),
+  };
+
+  return dashboard;
 };
 
 export const getProvinces = async () => {
