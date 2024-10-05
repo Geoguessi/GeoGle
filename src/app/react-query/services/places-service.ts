@@ -42,3 +42,11 @@ export const getProvinces = async () => {
 
   return response.data;
 };
+
+export const getPlacesCSV = async () => {
+  const response = await axios.get<Blob>(endpoints.provinces.csv, {
+    responseType: 'blob',
+  });
+
+  return response.data;
+};

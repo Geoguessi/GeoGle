@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import useGetPlacesDashboard from './react-query/hooks/use-get-places-dashboard';
 import useGetProvinces from './react-query/hooks/use-get-provinces';
 import PlaceCard from './components/place-card';
 import SearchInput from '@/components/search-input';
+import useGetPlacesCSV from './react-query/hooks/use-get-places-csv';
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -17,6 +18,7 @@ export default function Home() {
 
   useEffect(() => {
     setSelectedProvinceName(province ?? '');
+    setSearchProvinceName(province ?? '');
   }, [province]);
 
   const { data: dashboard } = useGetPlacesDashboard({
@@ -33,29 +35,64 @@ export default function Home() {
     [provinces, searchProvinceName],
   );
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const [csvDownloadStatus, setCSVDownloadStatus] = useState<
+    'fresh' | 'fetching' | 'stale'
+  >('fresh');
+  const { data: csv, isLoading: fetchCSVLoading } = useGetPlacesCSV(
+    csvDownloadStatus !== 'fresh',
+  );
+
+  const downloadCSV = useCallback(() => {
+    if (!csv) return;
+
+    const href = URL.createObjectURL(csv);
+
+    const link = document.createElement('a');
+    link.href = href;
+    link.setAttribute('download', 'province_data.csv');
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(href);
+  }, [csv]);
+
+  // automatically download the csv when the fetching is finished
+  // only happen when the csv needed to be fetched for the first time user click the download icon
+  useEffect(() => {
+    if (csv && csvDownloadStatus === 'fetching') {
+      downloadCSV();
+      setCSVDownloadStatus('stale');
+    }
+  }, [csv, csvDownloadStatus]);
+
+  const handleDownload = () => {
+    if (csvDownloadStatus !== 'fresh') {
+      downloadCSV();
+      return;
+    }
+    setCSVDownloadStatus('fetching'); // This triggers fetching the CSV and the useEffect
+  };
+
+  const handleSubmit = () => {
     router.push(`/?province=${selectedProvinceName}`);
   };
 
   return (
     <div className="w-screen px-6 py-24">
       <div className="flex flex-col gap-4">
-        <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
-          <SearchInput
-            selectedValue={selectedProvinceName}
-            onSelectedValueChange={setSelectedProvinceName}
-            searchValue={searchProvinceName}
-            onSearchValueChange={setSearchProvinceName}
-            items={allProvinces ?? []}
-            isLoading={isLoading}
-            emptyMessage="Province not found."
-          />
-
-          <button className="rounded bg-blue-400 p-4" type="submit">
-            Search
-          </button>
-        </form>
+        <SearchInput
+          onSearch={handleSubmit}
+          onDownload={handleDownload}
+          isDownloadLoading={fetchCSVLoading}
+          selectedValue={selectedProvinceName}
+          onSelectedValueChange={setSelectedProvinceName}
+          searchValue={searchProvinceName}
+          onSearchValueChange={setSearchProvinceName}
+          items={allProvinces ?? []}
+          isLoading={isLoading}
+          emptyMessage="Province not found."
+        />
 
         {/* Recommendation Section */}
         <p className="text-2xl font-semibold">Recommendation</p>
