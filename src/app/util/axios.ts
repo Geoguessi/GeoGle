@@ -14,6 +14,8 @@ axiosInstance.interceptors.response.use(
     ),
 );
 
+export default axiosInstance;
+
 // ----------------------------------------------------------------------
 
 export const endpoints = {
