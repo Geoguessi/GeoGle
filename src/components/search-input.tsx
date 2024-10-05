@@ -29,7 +29,7 @@ export function SearchInput<T extends string>({
         className="h-8 w-8 cursor-pointer"
         onClick={onSearch}
       />
-      <AutoComplete {...props} />
+      <AutoComplete onEnterSelected={onSearch} {...props} />
 
       {/* Shrinking Icon and expanding spinner based on isDownloadLoading */}
       <div className="relative">

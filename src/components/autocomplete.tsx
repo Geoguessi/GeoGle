@@ -22,6 +22,7 @@ export type AutocompleteProps<T extends string> = {
   isLoading?: boolean;
   emptyMessage?: string;
   placeholder?: string;
+  onEnterSelected?: () => void;
 };
 
 export function AutoComplete<T extends string>({
@@ -33,6 +34,7 @@ export function AutoComplete<T extends string>({
   isLoading,
   emptyMessage = 'No items.',
   placeholder = 'Search...',
+  onEnterSelected,
 }: AutocompleteProps<T>) {
   const [open, setOpen] = useState(false);
 
@@ -81,7 +83,17 @@ export function AutoComplete<T extends string>({
               asChild
               value={searchValue}
               onValueChange={onSearchValueChange}
-              onKeyDown={(e) => setOpen(e.key !== 'Escape')}
+              onKeyDown={(e) => {
+                setOpen(e.key !== 'Escape');
+
+                // When the enter is typed and the current searchValue is already a selectedValue
+                if (
+                  e.key === 'Enter' &&
+                  selectedValue === searchValue &&
+                  onEnterSelected
+                )
+                  onEnterSelected();
+              }}
               onMouseDown={() => setOpen((open) => !!searchValue || !open)}
               onFocus={() => setOpen(true)}
               onBlur={onInputBlur}

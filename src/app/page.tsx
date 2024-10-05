@@ -28,7 +28,9 @@ export default function Home() {
   const allProvinces = useMemo(
     () =>
       provinces
-        ?.filter((province) => province.includes(searchProvinceName)) // filter for province that has the input
+        ?.filter((province) =>
+          province.toLowerCase().includes(searchProvinceName.toLowerCase()),
+        ) // filter for province that has the input
         .map((province) => {
           return { value: province, label: province };
         }), // format each value for autocomplete
