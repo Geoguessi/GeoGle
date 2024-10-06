@@ -55,7 +55,7 @@ export default PlaceCard;
 
 export const PlaceCardSkeleton = () => {
   return (
-    <div className="animate-pulse cursor-pointer rounded-2xl border shadow-md">
+    <div className="min-h-[300px] animate-pulse cursor-pointer rounded-2xl border shadow-md">
       <div className="relative h-40 w-full rounded-md bg-gray-300" />
       <div className="flex flex-col p-4">
         <div className="mb-2 h-6 w-3/4 rounded-md bg-gray-300" />
