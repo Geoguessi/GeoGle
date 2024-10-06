@@ -23,7 +23,7 @@ export function SearchInput<T extends string>({
   };
 
   return (
-    <div className="flex w-full items-center rounded-full border px-6">
+    <div className="flex w-full items-center rounded-full border bg-white px-6">
       <Icon
         icon="tabler:search"
         className="h-8 w-8 cursor-pointer"
