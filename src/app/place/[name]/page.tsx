@@ -28,8 +28,8 @@ const Page = ({ params }: Params) => {
   if (error && result.detail.includes('404')) return <PlaceNotFound />;
 
   return (
-    <div className="flex w-screen flex-col items-center justify-center px-6 py-12">
-      <div className="flex w-full flex-col gap-2 lg:w-4/5">
+    <div className="mx-auto flex flex-col items-center justify-center px-6 py-12 xl:max-w-screen-xl">
+      <div className="flex w-full flex-col gap-2">
         <div
           className="flex cursor-pointer items-center gap-2"
           onClick={router.back}
@@ -38,7 +38,7 @@ const Page = ({ params }: Params) => {
           <p>Back to home</p>
         </div>
 
-        <div className="relative aspect-[16/9] w-full bg-gray-300">
+        <div className="relative mt-4 aspect-[16/9] w-full bg-gray-300">
           <Image
             src="/assets/place-template.png"
             loader={createImageLoader(place?.image, 'place-holder.png')}
@@ -51,10 +51,12 @@ const Page = ({ params }: Params) => {
           {place?.name}
         </p>
 
-        <div className="mb-2 flex items-center gap-2 text-gray-500 sm:mb-4">
-          <Icon icon="pajamas:location" className="text-xl sm:text-2xl" />
-          <p className="text-lg sm:text-xl">{place?.address}</p>
-        </div>
+        {place?.address && (
+          <div className="mb-2 flex items-center gap-2 text-gray-500 sm:mb-4">
+            <Icon icon="pajamas:location" className="text-xl sm:text-2xl" />
+            <p className="text-lg sm:text-xl">{place?.address}</p>
+          </div>
+        )}
 
         <p className="text-gray-500">{place?.description}</p>
       </div>
@@ -70,8 +72,8 @@ const PlaceSkeleton = () => {
   const router = useRouter();
 
   return (
-    <div className="flex w-screen flex-col items-center justify-center px-6 py-12">
-      <div className="flex w-full flex-col gap-2 lg:w-4/5">
+    <div className="mx-auto flex flex-col items-center justify-center px-6 py-12 xl:max-w-screen-xl">
+      <div className="flex w-full flex-col gap-2">
         {/* Back button skeleton */}
         <div
           className="flex cursor-pointer items-center gap-2"
@@ -82,7 +84,7 @@ const PlaceSkeleton = () => {
         </div>
 
         {/* Image placeholder */}
-        <div className="relative aspect-[16/9] w-full animate-pulse bg-gray-300" />
+        <div className="relative mt-4 aspect-[16/9] w-full animate-pulse bg-gray-300" />
 
         {/* Title skeleton */}
         <div className="mt-4 h-8 w-3/4 animate-pulse rounded-md bg-gray-300 sm:mb-2 sm:h-10" />
@@ -106,8 +108,8 @@ const PlaceNotFound = () => {
   const router = useRouter();
 
   return (
-    <div className="flex min-h-screen w-screen flex-col items-center px-6 py-12">
-      <div className="flex h-full w-full flex-grow flex-col gap-2 lg:w-4/5">
+    <div className="mx-auto flex min-h-screen flex-col items-center px-6 py-12 xl:max-w-screen-xl">
+      <div className="flex h-full w-full flex-grow flex-col gap-2">
         <div className="flex items-center gap-2" onClick={router.back}>
           <Icon icon="ep:arrow-left-bold" />
           <p>Back to home</p>

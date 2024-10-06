@@ -6,7 +6,7 @@ import useGetPlacesDashboard from '@/react-query/hooks/use-get-places-dashboard'
 import { cn } from '@/lib/utils';
 import { PlaceCardRow, PlaceCardRowSkeleton } from './place-card-row';
 import { CarouselItem } from '../ui/carousel';
-import Image from 'next/image';
+import Link from 'next/link';
 
 type Props = {
   open: boolean;
@@ -29,9 +29,9 @@ export default function HomeCard({ open }: Props) {
         open ? 'translate-y-[1000px]' : 'translate-y-full',
       )}
     >
-      <div className="flex h-full flex-grow flex-col gap-4 px-8 pt-20">
+      <div className="mx-auto flex h-full w-full flex-grow flex-col gap-4 px-8 pt-20 xl:max-w-screen-2xl">
         {/* Recommendation Section */}
-        <p className="text-2xl">สถานที่แนะนำของจังหวัด {province}</p>
+        <p className="text-2xl font-bold">สถานที่แนะนำของจังหวัด {province}</p>
         {isLoading ? (
           <PlaceCardRowSkeleton />
         ) : (
@@ -53,7 +53,9 @@ export default function HomeCard({ open }: Props) {
         )}
 
         {/* Foodie Section */}
-        <p className="mt-8 text-2xl">ร้านอาหารและคาเฟ่ในจังหวัด {province}</p>
+        <p className="mt-8 text-2xl font-bold">
+          ร้านอาหารและคาเฟ่ในจังหวัด {province}
+        </p>
         {isLoading ? (
           <PlaceCardRowSkeleton />
         ) : (
@@ -75,7 +77,9 @@ export default function HomeCard({ open }: Props) {
         )}
 
         {/* Attraction Section */}
-        <p className="mt-8 text-2xl">ที่เที่ยวของจังหวัด {province}</p>
+        <p className="mt-8 text-2xl font-bold">
+          ที่เที่ยวของจังหวัด {province}
+        </p>
         {isLoading ? (
           <PlaceCardRowSkeleton />
         ) : (
@@ -106,19 +110,19 @@ export default function HomeCard({ open }: Props) {
       </div>
 
       {/* Footer */}
-      <div className="flex h-32 items-center justify-center bg-blue-500">
+      <div className="flex h-16 items-center justify-center bg-blue-500 text-white shadow-lg">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white p-2 sm:h-16 sm:w-16 sm:p-0">
-            {/* make Image responsive */}
-            <Image src="/assets/logo.svg" alt="logo" width={48} height={48} />
-          </div>
-
-          <div className="flex flex-col text-white">
-            <p className="text-base sm:text-xl">2024 - 2024 | GeoGle.co.ltd</p>
-            <p className="text-base sm:text-xl">
-              For Theory of Computation only
-            </p>
-          </div>
+          <p className="text-lg">
+            Source code available at{' '}
+            <Link
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://github.com/orgs/Geoguessi/repositories"
+              className="font-semibold text-white underline transition duration-300 hover:text-blue-300"
+            >
+              Github
+            </Link>
+          </p>
         </div>
       </div>
     </div>

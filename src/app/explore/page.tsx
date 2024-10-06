@@ -1,10 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import {
-  PlaceCardLink,
-  PlaceCardSkeleton,
-} from '@/components/home/place-card';
+import { PlaceCardLink, PlaceCardSkeleton } from '@/components/home/place-card';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import useGetProvincePlaces from '@/react-query/hooks/use-get-province-places';
 import { LoadingSpinner } from '@/components/spinner';
@@ -21,7 +18,7 @@ export default function Page() {
   const router = useRouter();
 
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-center px-6 py-12">
+    <div className="mx-auto flex h-screen flex-col items-center justify-center px-6 py-12 xl:max-w-screen-xl">
       <div className="flex h-full w-full flex-col gap-2">
         {/* header */}
         <div className="flex flex-col bg-white pb-4">
@@ -35,13 +32,13 @@ export default function Page() {
           </div>
 
           {/* province title */}
-          <p className="my-4 text-5xl">{province}</p>
+          <p className="my-4 text-4xl md:text-5xl">{province}</p>
 
           {/* number of places found */}
           {isLoading ? (
             <LoadingSpinner />
           ) : (
-            <p className="mt-4 text-2xl">
+            <p className="text-lg md:mt-4 md:text-2xl">
               ค้นพบ {hrefList?.href_res.length} สถานที่
             </p>
           )}
