@@ -15,8 +15,6 @@ export const createImageLoader =
     if (imageUrl) {
       const googleStoragePath = getGoogleStoragePath(imageUrl);
 
-      console.log(googleStoragePath);
-
       return googleStoragePath || placeholder || '';
     }
 
