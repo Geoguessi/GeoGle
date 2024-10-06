@@ -1,0 +1,20 @@
+.allPlace {
+  display: flex;
+  padding: 50px;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+#backtohome {
+  width: fit-content;
+  background-color: transparent;
+  outline: none;
+  border: none;
+}
+#backtohome:hover {
+  cursor: pointer;
+}
+.allcardplace {
+  gap: 10px;
+}
