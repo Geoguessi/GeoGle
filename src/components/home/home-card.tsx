@@ -23,7 +23,6 @@ export default function HomeCard({ open }: Props) {
   const router = useRouter();
 
   return (
-    // Hey ChatGPT, Can you put some thing at bottom-0 of this div? it's not in relative though
     <div
       className={cn(
         'absolute bottom-0 flex h-[1500px] max-h-[1500px] w-screen flex-col rounded-t-3xl bg-white transition-transform duration-1000',
@@ -108,13 +107,16 @@ export default function HomeCard({ open }: Props) {
       {/* Footer */}
       <div className="flex h-32 items-center justify-center bg-blue-500">
         <div className="flex items-center gap-4">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white p-2 sm:h-16 sm:w-16 sm:p-0">
+            {/* make Image responsive */}
             <Image src="/assets/logo.svg" alt="logo" width={48} height={48} />
           </div>
 
           <div className="flex flex-col text-white">
-            <p className="text-xl">2024 - 2024 | GeoGle.co.ltd</p>
-            <p className="text-xl">For Theory of Computation only</p>
+            <p className="text-base sm:text-xl">2024 - 2024 | GeoGle.co.ltd</p>
+            <p className="text-base sm:text-xl">
+              For Theory of Computation only
+            </p>
           </div>
         </div>
       </div>

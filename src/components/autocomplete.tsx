@@ -89,7 +89,7 @@ export function AutoComplete<T extends string>({
                 // When the enter is typed and the current searchValue is already a selectedValue
                 if (
                   e.key === 'Enter' &&
-                  selectedValue === searchValue &&
+                  (selectedValue === searchValue || searchValue === '') &&
                   // selectedValue !== '' &&
                   onEnterSelected
                 )

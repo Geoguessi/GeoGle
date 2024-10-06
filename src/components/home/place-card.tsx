@@ -19,6 +19,12 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ title, image, link }) => {
     router.push(`/place/${title}`);
   };
 
+  const decodeHtml = (html: string) => {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+  };
+
   return (
     <div
       className="min-h-[300px] cursor-pointer rounded-2xl border shadow-md"
@@ -35,7 +41,7 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ title, image, link }) => {
       </div>
 
       <div className="flex flex-col p-4">
-        <h2 className="text-xl font-bold">{title}</h2>
+        <h2 className="text-xl font-bold">{decodeHtml(title)}</h2>
         <Link
           href={link}
           target="_blank"
