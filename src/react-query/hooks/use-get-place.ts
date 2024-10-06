@@ -11,6 +11,7 @@ const useGetPlaceByName = ({ placeName }: Props) =>
   useQuery({
     queryKey: [CONSTANTS.PLACE_DETAIL, placeName],
     queryFn: getPlaceByName,
+    // throwOnError: true,
   });
 
 export default useGetPlaceByName;

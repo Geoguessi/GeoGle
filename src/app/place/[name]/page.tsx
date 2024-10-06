@@ -1,5 +1,6 @@
 'use client';
 
+import NotFound from '@/components/not-found';
 import useGetPlaceByName from '@/react-query/hooks/use-get-place';
 import { createImageLoader } from '@/util';
 import { Icon } from '@iconify/react/dist/iconify.js';
@@ -11,11 +12,20 @@ type Params = {
 };
 
 const Page = ({ params }: Params) => {
-  const { data: place } = useGetPlaceByName({
+  const {
+    data: place,
+    isLoading,
+    error,
+  } = useGetPlaceByName({
     placeName: decodeURI(params.name),
   });
 
   const router = useRouter();
+
+  if (isLoading) return <PlaceSkeleton />;
+
+  const result = error as unknown as { detail: string };
+  if (error && result.detail.includes('404')) return <PlaceNotFound />;
 
   return (
     <div className="flex w-screen flex-col items-center justify-center px-6 py-12">
@@ -25,7 +35,7 @@ const Page = ({ params }: Params) => {
           <p>Back to home</p>
         </div>
 
-        <div className="relative aspect-[16/9] w-full bg-gray-300">
+        <div className={'relative aspect-[16/9] w-full bg-gray-300'}>
           <Image
             src="/assets/place-template.png"
             loader={createImageLoader(place?.image, 'place-holder.png')}
@@ -50,3 +60,54 @@ const Page = ({ params }: Params) => {
 };
 
 export default Page;
+
+// --------------------------------------------------
+
+const PlaceSkeleton = () => {
+  const router = useRouter();
+
+  return (
+    <div className="flex w-screen flex-col items-center justify-center px-6 py-12">
+      <div className="flex w-full flex-col gap-2 lg:w-4/5">
+        {/* Back button skeleton */}
+        <div className="flex items-center gap-2" onClick={router.back}>
+          <Icon icon="ep:arrow-left-bold" />
+          <p>Back to home</p>
+        </div>
+
+        {/* Image placeholder */}
+        <div className="relative aspect-[16/9] w-full animate-pulse bg-gray-300" />
+
+        {/* Title skeleton */}
+        <div className="mt-4 h-8 w-3/4 animate-pulse rounded-md bg-gray-300 sm:mb-2 sm:h-10" />
+
+        {/* Address skeleton */}
+        <div className="mb-2 flex animate-pulse items-center gap-2 text-gray-500 sm:mb-4">
+          <Icon icon="pajamas:location" className="text-xl sm:text-2xl" />
+          <div className="h-4 w-1/2 rounded-md bg-gray-300" />
+        </div>
+
+        {/* Description skeleton */}
+        <div className="h-24 w-full animate-pulse rounded-md bg-gray-300" />
+      </div>
+    </div>
+  );
+};
+
+// --------------------------------------------------
+
+const PlaceNotFound = () => {
+  const router = useRouter();
+
+  return (
+    <div className="flex min-h-screen w-screen flex-col items-center px-6 py-12">
+      <div className="flex h-full w-full flex-grow flex-col gap-2 lg:w-4/5">
+        <div className="flex items-center gap-2" onClick={router.back}>
+          <Icon icon="ep:arrow-left-bold" />
+          <p>Back to home</p>
+        </div>
+        <NotFound className="flex-grow" />
+      </div>
+    </div>
+  );
+};

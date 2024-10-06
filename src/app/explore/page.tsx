@@ -5,7 +5,7 @@ import PlaceCard from '@/components/explore/place-card';
 import useGetPlacesDashboard from '@/react-query/hooks/use-get-places-dashboard';
 import SearchBar from '@/components/explore/search-bar';
 
-export default function Home() {
+export default function Page() {
   const searchParams = useSearchParams();
   const province = searchParams.get('province');
 

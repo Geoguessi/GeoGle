@@ -3,8 +3,6 @@ import { Platypi } from 'next/font/google';
 import './globals.css';
 import { ReactQueryProvider } from '../react-query';
 
-import { Suspense } from 'react';
-
 const platypi = Platypi({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -20,9 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${platypi.className} antialiased`}>
-        <Suspense>
-          <ReactQueryProvider>{children}</ReactQueryProvider>
-        </Suspense>
+        <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>
   );

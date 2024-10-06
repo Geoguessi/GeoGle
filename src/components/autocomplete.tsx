@@ -105,6 +105,7 @@ export function AutoComplete<T extends string>({
             </CommandPrimitive.Input>
           </PopoverAnchor>
           {!open && <CommandList aria-hidden="true" className="hidden" />}
+
           <PopoverContent
             asChild
             onOpenAutoFocus={(e) => e.preventDefault()}
@@ -134,6 +135,7 @@ export function AutoComplete<T extends string>({
                       value={option.value}
                       onMouseDown={(e) => e.preventDefault()}
                       onSelect={onSelectItem}
+                      className="px-4 py-2 text-base"
                     >
                       <Check
                         className={cn(
