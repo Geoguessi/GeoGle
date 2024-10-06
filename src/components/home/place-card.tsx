@@ -21,7 +21,7 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ title, image, link }) => {
 
   return (
     <div
-      className="cursor-pointer rounded-2xl border shadow-md"
+      className="min-h-[300px] cursor-pointer rounded-2xl border shadow-md"
       onClick={handleClick}
     >
       <div className="relative h-40 w-full">
