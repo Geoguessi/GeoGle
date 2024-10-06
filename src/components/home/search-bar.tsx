@@ -5,6 +5,7 @@ import useGetProvinces from '@/react-query/hooks/use-get-provinces';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import SearchInput from '../search-input';
+import { thaiProvinceNames } from '@/constants/thai-province';
 
 type Props = {
   province: string;
@@ -27,9 +28,10 @@ export default function SearchBar({ province }: Props) {
 
   // all available province
   const { data: provinces, isLoading } = useGetProvinces();
+  const availableProvinces = [...thaiProvinceNames, ...(provinces ?? [])];
   const allProvinces = useMemo(
     () =>
-      provinces
+      availableProvinces
         ?.filter((province) =>
           province.toLowerCase().includes(searchProvinceName.toLowerCase()),
         ) // filter for province that has the input

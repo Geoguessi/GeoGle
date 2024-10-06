@@ -4,19 +4,36 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { createImageLoader } from '@/util';
+import useGetPlaceByName from '@/react-query/hooks/use-get-place';
 
 type PlaceCardProps = {
   title: string;
   image: string;
   link: string;
+  isAttraction?: boolean;
 };
 
 // make a PlaceCard Skeleton
-const PlaceCard: React.FC<PlaceCardProps> = ({ title, image, link }) => {
+const PlaceCard: React.FC<PlaceCardProps> = ({
+  title,
+  image,
+  link,
+  isAttraction = false,
+}) => {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push(`/place/${title}`);
+    const result = link.replace(
+      /^https:\/\/www\.tripniceday\.com\/place\//,
+      '',
+    );
+
+    // TODO: this is weird
+    if (isAttraction) {
+      router.push(`/place/${title}`);
+    } else {
+      router.push(`/place/${result}`);
+    }
   };
 
   const decodeHtml = (html: string) => {
@@ -42,11 +59,15 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ title, image, link }) => {
 
       <div className="flex flex-col p-4">
         <h2 className="text-xl font-bold">{decodeHtml(title)}</h2>
+        {/* How to make this link on click not effect the handleClick? */}
         <Link
           href={link}
           target="_blank"
           rel="noopener noreferrer"
           className="top-20 text-blue-500 hover:underline"
+          onClick={(e) => {
+            e.stopPropagation();
+          }} // Prevent click propagation
         >
           Visit
         </Link>
@@ -56,6 +77,25 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ title, image, link }) => {
 };
 
 export default PlaceCard;
+
+// --------------------------------------------------
+
+type PlaceCardLinkProps = {
+  link: string;
+};
+
+export const PlaceCardLink = ({ link }: PlaceCardLinkProps) => {
+  // remove place from "/place/%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%9B%E0%B8%A3%E0%B8%B2%E0%B8%87%E0%B8%84%E0%B9%8C"
+  const placeName = link.replace(/^\/place\//, '');
+  const { data: place, isLoading } = useGetPlaceByName({
+    placeName: decodeURI(placeName),
+  });
+
+  if (isLoading || !place) return <PlaceCardSkeleton />;
+
+  // TODO: How would you know if it's an attraction?
+  return <PlaceCard title={place.name} image={place.image} link={place.link} />;
+};
 
 // --------------------------------------------------
 

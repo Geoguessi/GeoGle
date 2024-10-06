@@ -90,6 +90,7 @@ export default function HomeCard({ open }: Props) {
                   title={place.title}
                   image={place.image}
                   link={place.link}
+                  isAttraction
                 />
               </CarouselItem>
             ))}

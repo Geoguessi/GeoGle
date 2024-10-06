@@ -1,57 +1,59 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import PlaceCard, { PlaceCardSkeleton } from '@/components/home/place-card';
-import useGetPlacesDashboard from '@/react-query/hooks/use-get-places-dashboard';
+import {
+  PlaceCardLink,
+  PlaceCardSkeleton,
+} from '@/components/home/place-card';
 import { Icon } from '@iconify/react/dist/iconify.js';
-import { useMemo } from 'react';
+import useGetProvincePlaces from '@/react-query/hooks/use-get-province-places';
+import { LoadingSpinner } from '@/components/spinner';
 
 export default function Page() {
   const searchParams = useSearchParams();
   const province = searchParams?.get('province');
 
   // TODO: change to get all or something
-  const { data: dashboard, isLoading } = useGetPlacesDashboard({
+  const { data: hrefList, isLoading } = useGetProvincePlaces({
     provinceName: province ?? '',
   });
-  const places = useMemo(
-    () => [
-      ...(dashboard?.recommendation ?? []),
-      ...(dashboard?.foodie ?? []),
-      ...(dashboard?.attraction ?? []),
-    ],
-    [dashboard],
-  );
 
   const router = useRouter();
 
   return (
-    <div className="flex w-screen flex-col items-center justify-center px-6 py-12">
-      <div className="flex w-full flex-col gap-2">
-        <div
-          className="flex cursor-pointer items-center gap-2"
-          onClick={router.back}
-        >
-          <Icon icon="ep:arrow-left-bold" />
-          <p>Back to home</p>
+    <div className="flex h-screen w-screen flex-col items-center justify-center px-6 py-12">
+      <div className="flex h-full w-full flex-col gap-2">
+        {/* header */}
+        <div className="flex flex-col bg-white pb-4">
+          {/* back button */}
+          <div
+            className="flex w-fit cursor-pointer items-center gap-2"
+            onClick={router.back}
+          >
+            <Icon icon="ep:arrow-left-bold" />
+            <p>Back to home</p>
+          </div>
+
+          {/* province title */}
+          <p className="my-4 text-5xl">{province}</p>
+
+          {/* number of places found */}
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <p className="mt-4 text-2xl">
+              ค้นพบ {hrefList?.href_res.length} สถานที่
+            </p>
+          )}
         </div>
 
-        <p className="my-4 text-5xl">{province}</p>
-
-        <p className="mt-4 text-2xl">ค้นพบ {places.length} สถานที่</p>
-
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 overflow-y-auto sm:grid-cols-2 md:grid-cols-3">
           {isLoading
             ? Array.from({ length: 9 }).map((_, index) => (
                 <PlaceCardSkeleton key={index} /> // Render skeletons when loading
               ))
-            : places?.map((place) => (
-                <PlaceCard
-                  key={place.title}
-                  title={place.title}
-                  image={place.image}
-                  link={place.link}
-                />
+            : hrefList?.href_res.map((link, index) => (
+                <PlaceCardLink key={index} link={link} />
               ))}
         </div>
       </div>

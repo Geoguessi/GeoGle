@@ -18,3 +18,7 @@ type PlacesDashboard = {
   foodie: PlaceTiny[];
   attraction: PlaceTiny[];
 };
+
+type PlaceLinks = {
+  href_res: string[];
+};
