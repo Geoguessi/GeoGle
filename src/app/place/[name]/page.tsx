@@ -30,7 +30,10 @@ const Page = ({ params }: Params) => {
   return (
     <div className="flex w-screen flex-col items-center justify-center px-6 py-12">
       <div className="flex w-full flex-col gap-2 lg:w-4/5">
-        <div className="flex items-center gap-2" onClick={router.back}>
+        <div
+          className="flex cursor-pointer items-center gap-2"
+          onClick={router.back}
+        >
           <Icon icon="ep:arrow-left-bold" />
           <p>Back to home</p>
         </div>
@@ -70,7 +73,10 @@ const PlaceSkeleton = () => {
     <div className="flex w-screen flex-col items-center justify-center px-6 py-12">
       <div className="flex w-full flex-col gap-2 lg:w-4/5">
         {/* Back button skeleton */}
-        <div className="flex items-center gap-2" onClick={router.back}>
+        <div
+          className="flex cursor-pointer items-center gap-2"
+          onClick={router.back}
+        >
           <Icon icon="ep:arrow-left-bold" />
           <p>Back to home</p>
         </div>

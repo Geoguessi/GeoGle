@@ -1,60 +1,58 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
-import PlaceCard from '@/components/home/place-card';
+import { useRouter, useSearchParams } from 'next/navigation';
+import PlaceCard, { PlaceCardSkeleton } from '@/components/home/place-card';
 import useGetPlacesDashboard from '@/react-query/hooks/use-get-places-dashboard';
-import SearchBar from '@/components/home/search-bar';
+import { Icon } from '@iconify/react/dist/iconify.js';
+import { useMemo } from 'react';
 
 export default function Page() {
   const searchParams = useSearchParams();
   const province = searchParams?.get('province');
 
-  const { data: dashboard } = useGetPlacesDashboard({
+  // TODO: change to get all or something
+  const { data: dashboard, isLoading } = useGetPlacesDashboard({
     provinceName: province ?? '',
   });
+  const places = useMemo(
+    () => [
+      ...(dashboard?.recommendation ?? []),
+      ...(dashboard?.foodie ?? []),
+      ...(dashboard?.attraction ?? []),
+    ],
+    [dashboard],
+  );
+
+  const router = useRouter();
 
   return (
-    <div className="w-screen px-6 py-24">
-      <div className="flex flex-col gap-4">
-        <SearchBar province={province ?? ''} />
-
-        {/* Recommendation Section */}
-        <p className="text-2xl font-semibold">Recommendation</p>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {dashboard?.recommendation?.map((place) => (
-            <PlaceCard
-              key={place.title}
-              title={place.title}
-              image={place.image}
-              link={place.link}
-            />
-          ))}
+    <div className="flex w-screen flex-col items-center justify-center px-6 py-12">
+      <div className="flex w-full flex-col gap-2">
+        <div
+          className="flex cursor-pointer items-center gap-2"
+          onClick={router.back}
+        >
+          <Icon icon="ep:arrow-left-bold" />
+          <p>Back to home</p>
         </div>
 
-        {/* Foodie Section */}
-        <p className="mt-8 text-2xl font-semibold">Foodie</p>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {dashboard?.foodie?.map((place) => (
-            <PlaceCard
-              key={place.title}
-              title={place.title}
-              image={place.image}
-              link={place.link}
-            />
-          ))}
-        </div>
+        <p className="my-4 text-5xl">{province}</p>
 
-        {/* Attraction Section */}
-        <p className="mt-8 text-2xl font-semibold">Attraction</p>
+        <p className="mt-4 text-2xl">ค้นพบ {places.length} สถานที่</p>
+
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {dashboard?.attraction?.map((place) => (
-            <PlaceCard
-              key={place.title}
-              title={place.title}
-              image={place.image}
-              link={place.link}
-            />
-          ))}
+          {isLoading
+            ? Array.from({ length: 9 }).map((_, index) => (
+                <PlaceCardSkeleton key={index} /> // Render skeletons when loading
+              ))
+            : places?.map((place) => (
+                <PlaceCard
+                  key={place.title}
+                  title={place.title}
+                  image={place.image}
+                  link={place.link}
+                />
+              ))}
         </div>
       </div>
     </div>

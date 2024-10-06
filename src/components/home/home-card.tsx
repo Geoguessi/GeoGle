@@ -1,6 +1,6 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import PlaceCard from '@/components/home/place-card';
 import useGetPlacesDashboard from '@/react-query/hooks/use-get-places-dashboard';
 import { cn } from '@/lib/utils';
@@ -19,6 +19,8 @@ export default function HomeCard({ open }: Props) {
   const { data: dashboard, isLoading } = useGetPlacesDashboard({
     provinceName: province ?? '',
   });
+
+  const router = useRouter();
 
   return (
     // Hey ChatGPT, Can you put some thing at bottom-0 of this div? it's not in relative though
@@ -95,7 +97,10 @@ export default function HomeCard({ open }: Props) {
           </PlaceCardRow>
         )}
 
-        <button className="mr-6 mt-2 w-fit self-end rounded-full bg-blue-500 px-4 py-2 text-white">
+        <button
+          className="mr-6 mt-2 w-fit self-end rounded-full bg-blue-500 px-4 py-2 text-white"
+          onClick={() => router.push(`/explore?province=${province}`)}
+        >
           ดูเพิ่มเติม
         </button>
       </div>
