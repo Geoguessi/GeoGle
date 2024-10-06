@@ -7,7 +7,7 @@ import SearchBar from '@/components/explore/search-bar';
 
 export default function Page() {
   const searchParams = useSearchParams();
-  const province = searchParams.get('province');
+  const province = searchParams?.get('province');
 
   const { data: dashboard } = useGetPlacesDashboard({
     provinceName: province ?? '',

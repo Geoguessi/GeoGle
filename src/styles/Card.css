@@ -1,0 +1,108 @@
+.groupplace {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.cardcontainer {
+  position: relative;
+  border-radius: 30px 30px 0 0;
+  background-color: white;
+  z-index: 33;
+  display: none;
+}
+.head {
+  padding-left: 3%;
+}
+.cardhead {
+  display: flex;
+  padding: 20px 5%;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+}
+.showcard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  overflow: hidden;
+}
+
+.card {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: center;
+  padding: 0px;
+  transition: all 0.6s ease-in-out;
+}
+
+.card img {
+  width: 100%;
+  border-radius: 15px 15px 0 0;
+}
+
+.card h2 {
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  line-height: 1em;
+  padding-left: 5%;
+}
+
+.card p {
+  text-align: left;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.5em;
+  height: 6em;
+  padding-left: 5%;
+}
+
+.more-cards {
+  float: right;
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 24px;
+  color: #288bff;
+  text-decoration: none;
+  width: 1%;
+}
+
+.more-cards:hover {
+  text-decoration: underline;
+}
+
+.slide {
+  display: none;
+  padding: 20px 5%;
+  justify-content: flex-start;
+  gap: 15%;
+  width: 100%;
+  align-items: center;
+  overflow: hidden;
+  transition:
+    opacity 2s ease-in-out,
+    transform 2s ease-in-out;
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.slide.active {
+  display: flex;
+  opacity: 1;
+  transition:
+    opacity 2s ease-in-out,
+    transform 2s ease-in-out;
+  transform: translateX(0);
+}
