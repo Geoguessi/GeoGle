@@ -35,7 +35,7 @@ const Page = ({ params }: Params) => {
           <p>Back to home</p>
         </div>
 
-        <div className={'relative aspect-[16/9] w-full bg-gray-300'}>
+        <div className="relative aspect-[16/9] w-full bg-gray-300">
           <Image
             src="/assets/place-template.png"
             loader={createImageLoader(place?.image, 'place-holder.png')}

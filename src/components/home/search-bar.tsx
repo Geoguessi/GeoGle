@@ -79,7 +79,8 @@ export default function SearchBar({ province }: Props) {
   };
 
   const handleSubmit = () => {
-    router.push(`/explore?province=${selectedProvinceName}`);
+    router.push(`/?province=${selectedProvinceName}`);
+    // router.push(`/explore?province=${selectedProvinceName}`);
   };
 
   return (

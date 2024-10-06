@@ -1,9 +1,9 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import PlaceCard from '@/components/explore/place-card';
+import PlaceCard from '@/components/home/place-card';
 import useGetPlacesDashboard from '@/react-query/hooks/use-get-places-dashboard';
-import SearchBar from '@/components/explore/search-bar';
+import SearchBar from '@/components/home/search-bar';
 
 export default function Page() {
   const searchParams = useSearchParams();

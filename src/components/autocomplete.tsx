@@ -90,7 +90,7 @@ export function AutoComplete<T extends string>({
                 if (
                   e.key === 'Enter' &&
                   selectedValue === searchValue &&
-                  selectedValue !== '' &&
+                  // selectedValue !== '' &&
                   onEnterSelected
                 )
                   onEnterSelected();
