@@ -1,7 +1,7 @@
 'use client';
 
-import useGetPlaceByName from '@/app/react-query/hooks/use-get-place';
-import { createImageLoader } from '@/app/util';
+import useGetPlaceByName from '@/react-query/hooks/use-get-place';
+import { createImageLoader } from '@/util';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';

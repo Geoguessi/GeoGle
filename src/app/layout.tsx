@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Platypi } from 'next/font/google';
 import './globals.css';
-import { ReactQueryProvider } from './react-query';
+import { ReactQueryProvider } from '../react-query';
 
 import { Suspense } from 'react';
 

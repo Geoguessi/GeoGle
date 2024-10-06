@@ -1,5 +1,5 @@
-import { axios } from '@/app/util';
-import { endpoints } from '@/app/util/axios';
+import { axios } from '@/util';
+import { endpoints } from '@/util/axios';
 
 type Params = {
   queryKey: string[];
